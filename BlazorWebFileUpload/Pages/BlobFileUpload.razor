@@ -1,0 +1,139 @@
+﻿@page "/fileupload"
+@using BlazorWebFileUpload.Services
+@inject ILogger<BlobFileUpload> Logger
+@inject IConfiguration _configuration
+@inject IFileUploadService _fileUploadService
+<h3>BlobFileUpload</h3>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="container">
+                <div class="file-upload">
+                    <InputFile OnChange="@LoadFiles" multiple class="file-input"></InputFile>
+                    <div class="icon">
+                        <ion-icon name="cloud-upload-outline"></ion-icon>
+                    </div>
+                    <h3>Drop files here</h3>
+                    <span> - OR - </span>
+                    <strong>Browse</strong>
+                    <button>
+                        <ion-icon name="close"></ion-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="container">
+                @foreach (var file in loadedFiles)
+                {
+                    <div class="list-upload">
+                        <ul>
+                            <li class="file-list">
+                                @file.Name
+                                <button class="remove" @onclick="()=>RemoveFile(file)">
+                                    <ion-icon name="close-outline"></ion-icon>
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@* 
+<div class="container">
+    <div class="file-upload">
+        <InputFile OnChange="@LoadFiles" multiple class="file-input"></InputFile>
+        <div class="icon">
+            <ion-icon name="cloud-upload-outline"></ion-icon>
+        </div>
+        <h3>Drop files here</h3>
+        <span> - OR - </span>
+        <strong>Browse</strong>
+        <button>
+            <ion-icon name="close"></ion-icon>
+        </button>
+    </div>
+    @foreach (var file in loadedFiles)
+    {
+        <div class="list-upload">
+            <ul>
+                <li class="file-list">
+                    @file.Name
+                    <button class="remove" @onclick="()=>RemoveFile(file)">
+                        <ion-icon name="close-outline"></ion-icon>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    }
+
+</div> *@
+<p>
+    <button @onclick="UploadFiles">Upload</button>
+</p>
+@* <p>
+    <label>
+        Max file size:
+        <input type="number" @bind="maxFileSize" />
+    </label>
+</p>
+
+<p>
+    <label>
+        Max allowed files:
+        <input type="number" @bind="maxAllowedFiles" />
+    </label>
+</p>
+
+<p>
+    <label>
+        Upload up to @maxAllowedFiles of up to @maxFileSize bytes:
+        <InputFile OnChange="@LoadFiles" multiple />
+    </label>
+</p>
+*@
+
+
+@if (IsVisible)
+{
+    <div class="dialog-background">
+        <div class="dialog-content">
+            <p>Upload successful!</p>
+            <button @onclick="Close">OK</button>
+        </div>
+    </div>
+}
+@if (IsErrorMessage)
+{
+    <div class="dialog-background">
+        <div class="dialog-content">
+            <p>@message.ReasonPhrase @message.Content</p>
+            <button @onclick="Close1">OK</button>
+        </div>
+    </div>
+}
+
+@if (isLoading)
+{
+    <p>Uploading...</p>
+}
+@* else
+{
+    <ul>
+        @foreach (var file in loadedFiles)
+        {
+            <li>
+                <ul>
+                    <li>Name: @file.Name</li>
+                    <li>Size (bytes): @file.Size</li>
+                    <li>Content type: @file.ContentType</li>
+                </ul>
+            </li>
+        }
+    </ul>
+} *@
+

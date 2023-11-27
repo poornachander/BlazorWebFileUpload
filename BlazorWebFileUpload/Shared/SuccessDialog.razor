@@ -1,0 +1,15 @@
+﻿@using BlazorWebFileUpload.Models
+
+
+@if (Dialog.IsVisible)
+{
+    <div class="dialog-background">
+        <div class="dialog-content">
+            <p>Upload successful!</p>
+            <button @onclick="Dialog.Close">OK</button>
+        </div>
+    </div>
+}
+@code {
+    protected BaseDialog Dialog = new BaseDialog();
+}
